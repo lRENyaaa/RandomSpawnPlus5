@@ -34,9 +34,9 @@ public class RSPFirstJoinListener implements Listener {
 
         if (config.getBoolean("randomspawn-enabled")) {
             if (config.getBoolean("on-first-join")) {
-                if (RSPLoginListener.firstJoinPlayers.contains(player.getName())) {
+                if (RSPLoginListener.firstJoinPlayers.contains(player.getUniqueId())) {
                     if (config.getBoolean("use-permission-node") && !player.hasPermission("randomspawnplus.randomspawn")) {
-                        RSPLoginListener.firstJoinPlayers.remove(player.getName());
+                        RSPLoginListener.firstJoinPlayers.remove(player.getUniqueId());
                         return;
                     } else {
                         try {
@@ -57,10 +57,10 @@ public class RSPFirstJoinListener implements Listener {
                                 }
                             }.runTaskLater(plugin, 3);
                         } catch (FinderTimedOutException e) {
-                            plugin.getLogger().warning("The spawn finder failed to find a valid spawn, and has not given " + player.getName() + " a random spawn. If you find this happening a lot, then raise the 'spawn-finder-tries-before-timeout' key in the config.");
+                            plugin.getLogger().warning("The spawn finder failed to find a valid spawn, and has not given " + player.getUniqueId() + " a random spawn. If you find this happening a lot, then raise the 'spawn-finder-tries-before-timeout' key in the config.");
                             return;
                         }
-                        RSPLoginListener.firstJoinPlayers.remove(player.getName());
+                        RSPLoginListener.firstJoinPlayers.remove(player.getUniqueId());
                     }
                 }
             }
