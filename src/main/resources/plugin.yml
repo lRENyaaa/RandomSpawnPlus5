@@ -1,7 +1,7 @@
 name: RandomSpawnPlus5
 version: '${version}'
 main: systems.kscott.randomspawnplus.RandomSpawnPlus
-api-version: 1.19
+api-version: 1.13
 softdepend: [Essentials, Factions, Vault, LuckPerms]
 authors: [ 89apt89, Dreeam ]
 description: A comprehensive random spawning plugin for modern Minecraft versions.
