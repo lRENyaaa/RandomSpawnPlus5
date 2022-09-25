@@ -20,5 +20,5 @@ jobs:
       - name: Upload RandomSpawnPlus5
         uses: actions/upload-artifact@v3
         with:
-          name: RandomSpawnPlus5-maven
+          name: RandomSpawnPlus5
           path: target/

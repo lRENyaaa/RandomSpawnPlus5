@@ -41,7 +41,7 @@ public class RSPFirstJoinListener implements Listener {
                     } else {
                         try {
                             Location spawnLoc = SpawnFinder.getInstance().findSpawn(true);
-                            //by quiquelhappy - Prevent essentials home replace
+                            // quiquelhappy start - Prevent essentials home replace
                             boolean prevent = false;
                             if (config.getBoolean("essentials-home-on-first-spawn")) {
                                 User user = plugin.getEssentials().getUser(player);
@@ -66,6 +66,7 @@ public class RSPFirstJoinListener implements Listener {
                             } else {
                                 plugin.getLogger().warning("The spawn finder prevented a teleport for " + player.getUniqueId() + ", since essentials sethome is enabled and the player already had a home (perhaps old player data?).");
                             }
+                            // quiquelhappy end
                         } catch (FinderTimedOutException e) {
                             plugin.getLogger().warning("The spawn finder failed to find a valid spawn, and has not given " + player.getUniqueId() + " a random spawn. If you find this happening a lot, then raise the 'spawn-finder-tries-before-timeout' key in the config.");
                             return;

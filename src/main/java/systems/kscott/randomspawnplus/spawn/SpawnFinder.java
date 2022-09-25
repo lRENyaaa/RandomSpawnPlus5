@@ -167,9 +167,11 @@ public class SpawnFinder {
         if (locClone == null) {
             return false;
         }
-        if (!location.isChunkLoaded()) {
+        // 89apt89 start - Fix Paper method use
+        if (!location.getChunk().isLoaded()) {
             location.getChunk().load();
         }
+        // 89apt89 end
 
         Block block0 = locClone.getBlock();
         Block block1 = locClone.add(0, 1, 0).getBlock();
