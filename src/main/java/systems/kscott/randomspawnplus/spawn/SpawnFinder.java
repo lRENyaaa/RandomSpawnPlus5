@@ -188,8 +188,9 @@ public class SpawnFinder {
         isValid = spawnCheckEvent.isValid();
 
         if (!isValid) {
-            if (debugMode)
+            if (debugMode) {
                 plugin.getLogger().info("Invalid spawn: " + spawnCheckEvent.getValidReason());
+            }
         }
 
         if (blockedSpawnRange) {
@@ -244,11 +245,13 @@ public class SpawnFinder {
     }
 
     public int getHighestY(World world, int x, int z) {
+        boolean debugMode = config.getBoolean("debug-mode");
         int i = 320;
         while (i > -64) {
             if (!Blocks.isEmpty(new Location(world, x, i, z).getBlock())) {
-                if (config.getBoolean("debug-mode"))
+                if (debugMode) {
                     plugin.getLogger().info(Integer.toString(i));
+                }
                 return i;
             }
             i--;

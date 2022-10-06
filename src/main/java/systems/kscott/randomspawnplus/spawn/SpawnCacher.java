@@ -39,10 +39,11 @@ public class SpawnCacher {
     }
 
     private void cacheSpawns() {
-        boolean debugMode = plugin.getConfigManager().getConfig().getBoolean("debug-mode");
 
         FileConfiguration spawns = plugin.getSpawns();
         FileConfiguration config = plugin.getConfig();
+
+        boolean debugMode = plugin.getConfig().getBoolean("debug-mode");
 
         SpawnFinder finder = SpawnFinder.getInstance();
 
@@ -82,8 +83,9 @@ public class SpawnCacher {
             public void run() {
                 /* Wait for all spawns to be cached */
                 if (newLocations.size() <= missingLocations) {
-                    if (debugMode)
+                    if (debugMode) {
                         Bukkit.getLogger().info(newLocations.size() + ", " + missingLocations);
+                    }
                 } else {
                     cachedSpawns.addAll(newLocations);
                     /* Save spawns to file */
