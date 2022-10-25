@@ -86,11 +86,13 @@ public class SpawnFinder {
             maxZ = region.getMaxZ();
         }
 
-        System.out.println(minX);
-        System.out.println(minZ);
-        System.out.println(maxX);
-        System.out.println(maxZ);
-
+        boolean debugMode = config.getBoolean("debug-mode");
+        if (debugMode) {
+            System.out.println(minX);
+            System.out.println(minZ);
+            System.out.println(maxX);
+            System.out.println(maxZ);
+        }
 
         int candidateX = Numbers.getRandomNumberInRange(minX, maxX);
         int candidateZ = Numbers.getRandomNumberInRange(minZ, maxZ);

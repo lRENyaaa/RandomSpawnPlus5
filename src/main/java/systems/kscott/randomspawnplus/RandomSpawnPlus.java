@@ -127,7 +127,7 @@ public final class RandomSpawnPlus extends JavaPlugin {
     }
 
     private void setupEconomy() throws Exception {
-        RegisteredServiceProvider<Economy> rsp = Bukkit.getServicesManager().getRegistration(Economy.class);
+        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
         if (rsp == null) {
             throw new Exception("Error when loading the Vault API");
         }

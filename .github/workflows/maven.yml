@@ -1,4 +1,4 @@
-name: Build RandomSpawnPlus5 - Maven
+name: Build RandomSpawnPlus5
 
 on: [ push ]
 
@@ -6,7 +6,6 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
-    if: "!contains(github.event.commits[0].message, '[ci-skip]')"
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 17
@@ -21,4 +20,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: RandomSpawnPlus5
-          path: target/
+          path: target/*.jar
