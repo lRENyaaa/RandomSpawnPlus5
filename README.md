@@ -1,6 +1,6 @@
 # RandomSpawnPlus5
 
-🔀 A random spawn plugin for Minecraft 1.19.
+🔀 A random spawn plugin for Minecraft 1.19.2
 
 Native support 1.19.2
 

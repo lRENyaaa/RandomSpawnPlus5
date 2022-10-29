@@ -1,9 +1,7 @@
 package systems.kscott.randomspawnplus.spawn;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import io.papermc.lib.PaperLib;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import systems.kscott.randomspawnplus.RandomSpawnPlus;
@@ -16,6 +14,8 @@ import systems.kscott.randomspawnplus.util.XMaterial;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 public class SpawnFinder {
 
@@ -53,11 +53,18 @@ public class SpawnFinder {
     public Location getCandidateLocation() {
         String worldString = config.getString("respawn-world");
 
+        if (worldString == null) {
+            plugin.getLogger().severe("You've incorrectly defined the `respawn-world` key in the config.");
+            plugin.getServer().getPluginManager().disablePlugin(plugin);
+            return null;
+        }
+
         World world = Bukkit.getWorld(worldString);
 
         if (world == null) {
             plugin.getLogger().severe("The world '" + worldString + "' is invalid. Please change the 'respawn-world' key in the config.");
             plugin.getServer().getPluginManager().disablePlugin(plugin);
+            return null;
         }
 
         int minX = config.getInt("spawn-range.min-x");
@@ -166,18 +173,20 @@ public class SpawnFinder {
 
         Location locClone = location.clone();
 
-        if (locClone == null) {
+        Chunk chunk;
+
+        CompletableFuture<Chunk> chunkCompletableFuture = PaperLib.getChunkAtAsync(location);
+
+        try {
+            chunk = chunkCompletableFuture.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
             return false;
         }
-        // 89apt89 start - Fix Paper method use
-        if (!location.getChunk().isLoaded()) {
-            location.getChunk().load();
-        }
-        // 89apt89 end
 
-        Block block0 = locClone.getBlock();
-        Block block1 = locClone.add(0, 1, 0).getBlock();
-        Block block2 = locClone.add(0, 1, 0).getBlock();
+        Block block0 = chunk.getBlock(locClone.getBlockX() & 0xF, locClone.getBlockY() & 0xF, locClone.getBlockZ() & 0xF);
+        Block block1 = chunk.getBlock(locClone.getBlockX() & 0xF, locClone.getBlockY() + 1 & 0xF, locClone.getBlockZ() & 0xF);
+        Block block2 = chunk.getBlock(locClone.getBlockX() & 0xF, locClone.getBlockY() + 2 & 0xF, locClone.getBlockZ() & 0xF);
 
         if (block0 == null || block1 == null || block2 == null) {
             return false;
