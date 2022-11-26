@@ -255,8 +255,8 @@ public class SpawnFinder {
 
     public int getHighestY(World world, int x, int z) {
         boolean debugMode = config.getBoolean("debug-mode");
-        int i = 320;
-        while (i > -64) {
+        int i = world.getMaxHeight();
+        while (i > world.getMinHeight()) {
             if (!Blocks.isEmpty(new Location(world, x, i, z).getBlock())) {
                 if (debugMode) {
                     plugin.getLogger().info(Integer.toString(i));
