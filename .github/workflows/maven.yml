@@ -22,5 +22,5 @@ jobs:
           title: "RandomSpawnPlus5 v5.0.6"
           automatic_release_tag: "5.0.6"
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          files: "target"
+          files: "target/*.jar"
           prerelease: false
