@@ -11,7 +11,7 @@ jobs:
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
-          java-version: 17
+          java-version: 19
           distribution: temurin
           cache: maven
       - name: Build with Maven
@@ -19,8 +19,8 @@ jobs:
       - name: Release RandomSpawnPlus5
         uses: marvinpinto/action-automatic-releases@latest
         with:
-          title: "RandomSpawnPlus5 v5.0.6"
-          automatic_release_tag: "5.0.6"
+          title: "RandomSpawnPlus5 v5.0.7"
+          automatic_release_tag: "5.0.7"
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           files: "target/*.jar"
           prerelease: false
