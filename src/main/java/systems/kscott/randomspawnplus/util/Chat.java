@@ -42,26 +42,26 @@ public class Chat {
 
     public static void msg(Player player, String... messages) {
         Arrays.stream(messages).forEach((s) -> {
-            player.sendMessage(color(s));
+            player.sendMessage(net.kyori.adventure.text.Component.text(color(s)));
         });
     }
 
     public static void msg(CommandSender sender, String... messages) {
         Arrays.stream(messages).forEach((s) -> {
-            sender.sendMessage(color(s));
+            sender.sendMessage(net.kyori.adventure.text.Component.text(color(s)));
         });
     }
 
     public static void msgAll(String... messages) {
         Bukkit.getOnlinePlayers().stream().forEach((o) -> {
             Arrays.stream(messages).forEach((s) -> {
-                o.sendMessage(color(s));
+                o.sendMessage(net.kyori.adventure.text.Component.text(color(s)));
             });
         });
     }
 
     public static void log(String message) {
-        Bukkit.getConsoleSender().sendMessage(color(message));
+        Bukkit.getConsoleSender().sendMessage(net.kyori.adventure.text.Component.text(color(message)));
     }
 
     public static String uppercaseFirst(String str) {

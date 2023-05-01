@@ -110,10 +110,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>net.essentialsx</groupId>
-            <artifactId>EssentialsX</artifactId>
-            <version>2.19.7</version>
-            <scope>provided</scope>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-api</artifactId>
+            <version>4.13.1</version>
         </dependency>
         <dependency>
             <groupId>co.aikar</groupId>
@@ -125,6 +124,12 @@
             <artifactId>paperlib</artifactId>
             <version>1.0.8</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.essentialsx</groupId>
+            <artifactId>EssentialsX</artifactId>
+            <version>2.19.7</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>net.luckperms</groupId>
