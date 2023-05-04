@@ -1,5 +1,6 @@
 package systems.kscott.randomspawnplus.spawn;
 
+import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -11,7 +12,6 @@ import systems.kscott.randomspawnplus.events.SpawnCheckEvent;
 import systems.kscott.randomspawnplus.exceptions.FinderTimedOutException;
 import systems.kscott.randomspawnplus.util.Blocks;
 import systems.kscott.randomspawnplus.util.Numbers;
-import systems.kscott.randomspawnplus.util.XMaterial;
 
 import java.util.ArrayList;
 import java.util.List;

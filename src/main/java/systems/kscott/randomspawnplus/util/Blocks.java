@@ -1,5 +1,6 @@
 package systems.kscott.randomspawnplus.util;
 
+import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.block.Block;
 
 public class Blocks {
