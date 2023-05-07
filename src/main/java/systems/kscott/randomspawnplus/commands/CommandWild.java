@@ -63,10 +63,10 @@ public class CommandWild extends BaseCommand {
             return;
 
         }
-        if (plugin.getEconomy() != null && config.getInt("wild-cost") != 0) {
+        if (RandomSpawnPlus.getEconomy() != null && plugin.getConfig().getInt("wild-cost") != 0) {
             if (!player.hasPermission("randomspawnplus.wild.bypasscost")) {
-                if (plugin.getEconomy().has(player, config.getInt("wild-cost"))) {
-                    plugin.getEconomy().withdrawPlayer(player, config.getInt("wild-cost"));
+                if (RandomSpawnPlus.getEconomy().has(player, config.getInt("wild-cost"))) {
+                    RandomSpawnPlus.getEconomy().withdrawPlayer(player, config.getInt("wild-cost"));
                 } else {
                     Chat.msg(player, plugin.getLang().getString("wild-no-money"));
                     return;
