@@ -19,8 +19,8 @@ jobs:
       - name: Release RandomSpawnPlus5
         uses: marvinpinto/action-automatic-releases@latest
         with:
-          title: "RandomSpawnPlus5 v5.0.7"
-          automatic_release_tag: "5.0.7"
+          title: "RandomSpawnPlus5 v5.0.8"
+          automatic_release_tag: "5.0.8"
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           files: "target/*.jar"
           prerelease: false
