@@ -59,7 +59,7 @@ public class SpawnCacher {
 
         Bukkit.getLogger().info("Caching " + missingLocations + " spawns.");
         for (int i = 0; i <= missingLocations; i++) {
-            new BukkitRunnable() {
+            plugin.getServer().getGlobalRegionScheduler().runDelayed(plugin, scheduledTask -> new BukkitRunnable() {
 
                 @Override
                 public void run() {
@@ -73,10 +73,11 @@ public class SpawnCacher {
 
                     newLocations.add(Locations.serializeString(location));
                 }
-            }.runTaskLater(plugin, 1);
+            }, 1L);
         }
 
-        new BukkitRunnable() {
+        plugin.getServer().getGlobalRegionScheduler().runAtFixedRate(plugin, scheduledTask -> new BukkitRunnable() {
+
             @Override
             public void run() {
                 /* Wait for all spawns to be cached */
@@ -91,7 +92,7 @@ public class SpawnCacher {
                     cancel();
                 }
             }
-        }.runTaskTimerAsynchronously(plugin, 10, 10);
+        }, 10L, 10L);
     }
 
     public Location getRandomSpawn() {
