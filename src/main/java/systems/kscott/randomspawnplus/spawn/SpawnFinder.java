@@ -10,7 +10,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import systems.kscott.randomspawnplus.RandomSpawnPlus;
 import systems.kscott.randomspawnplus.events.SpawnCheckEvent;
 import systems.kscott.randomspawnplus.exceptions.FinderTimedOutException;
-import systems.kscott.randomspawnplus.util.Blocks;
 import systems.kscott.randomspawnplus.util.Numbers;
 
 import java.util.ArrayList;
@@ -120,10 +119,10 @@ public class SpawnFinder {
             if (tries >= 30) {
                 throw new FinderTimedOutException();
             }
-            if (SpawnCacher.getInstance().getCachedSpawns().size() == 0) {
+            if (SpawnCacher.getInstance().getCachedSpawns().isEmpty()) {
                 plugin.getLogger().severe(plugin.getLangManager().getConfig().getString("no-spawns-cached"));
             }
-            if (useCache && useSpawnCaching && SpawnCacher.getInstance().getCachedSpawns().size() != 0) {
+            if (useCache && useSpawnCaching && !SpawnCacher.getInstance().getCachedSpawns().isEmpty()) {
                 location = SpawnCacher.getInstance().getRandomSpawn();
             } else {
                 location = getCandidateLocation();
@@ -211,14 +210,14 @@ public class SpawnFinder {
             }
         }
 
-        if (Blocks.isEmpty(block0)) {
+        if (block0.isEmpty()) {
             if (debugMode) {
                 plugin.getLogger().info("Invalid spawn: block0 isAir");
             }
             isValid = false;
         }
 
-        if (!Blocks.isEmpty(block1) || !Blocks.isEmpty(block2)) {
+        if (!block1.isEmpty() || !block2.isEmpty()) {
             if (debugMode) {
                 plugin.getLogger().info("Invalid spawn: block1 or block2 !isAir");
             }
@@ -257,7 +256,7 @@ public class SpawnFinder {
         boolean debugMode = config.getBoolean("debug-mode");
         int i = world.getMaxHeight();
         while (i > world.getMinHeight()) {
-            if (!Blocks.isEmpty(new Location(world, x, i, z).getBlock())) {
+            if (!(new Location(world, x, i, z).getBlock()).isEmpty()) {
                 if (debugMode) {
                     plugin.getLogger().info(Integer.toString(i));
                 }
