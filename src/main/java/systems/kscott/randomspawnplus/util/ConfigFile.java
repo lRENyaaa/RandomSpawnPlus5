@@ -14,8 +14,8 @@ public class ConfigFile {
 
     @Getter
     private FileConfiguration config;
-    private RandomSpawnPlus plugin;
-    private String fileName;
+    private final RandomSpawnPlus plugin;
+    private final String fileName;
 
     public ConfigFile(RandomSpawnPlus plugin, String fileName) {
         this.fileName = fileName;
@@ -25,8 +25,7 @@ public class ConfigFile {
 
     private File createFile() {
         File customConfigFile = new File(plugin.getDataFolder(), fileName);
-        if (!customConfigFile.exists()) {
-            customConfigFile.getParentFile().mkdirs();
+        if (!customConfigFile.exists() || customConfigFile.getParentFile().mkdirs()) {
             plugin.saveResource(fileName, false);
         }
         return customConfigFile;

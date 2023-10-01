@@ -8,6 +8,7 @@ import net.milkbowl.vault.economy.Economy;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 import systems.kscott.randomspawnplus.commands.CommandRSP;
 import systems.kscott.randomspawnplus.commands.CommandWild;
 import systems.kscott.randomspawnplus.listeners.RSPDeathListener;
@@ -17,7 +18,7 @@ import systems.kscott.randomspawnplus.spawn.SpawnCacher;
 import systems.kscott.randomspawnplus.spawn.SpawnFinder;
 import systems.kscott.randomspawnplus.util.Chat;
 import systems.kscott.randomspawnplus.util.ConfigFile;
-import systems.kscott.randomspawnplus.util.Metrics;
+import org.bstats.bukkit.Metrics;
 
 public final class RandomSpawnPlus extends JavaPlugin {
 
@@ -105,7 +106,7 @@ public final class RandomSpawnPlus extends JavaPlugin {
         return (IEssentials) getServer().getPluginManager().getPlugin("Essentials");
     }
 
-    public FileConfiguration getConfig() {
+    public @NotNull FileConfiguration getConfig() {
         return configManager.getConfig();
     }
 
@@ -119,10 +120,8 @@ public final class RandomSpawnPlus extends JavaPlugin {
 
     private void setupPermissions() {
         RegisteredServiceProvider<LuckPerms> rsp = getServer().getServicesManager().getRegistration(LuckPerms.class);
-        if (rsp == null) {
-            luckPerms = null;
-        }
-        luckPerms = rsp.getProvider();
+        if (rsp != null) luckPerms = rsp.getProvider();
+        if (rsp == null) luckPerms = null;
     }
 
     private boolean setupEconomy() {

@@ -13,7 +13,7 @@ import java.util.UUID;
 public class RSPLoginListener implements Listener {
 
     public static ArrayList<UUID> firstJoinPlayers = new ArrayList<>();
-    private FileConfiguration config;
+    private final FileConfiguration config;
 
 
     public RSPLoginListener(RandomSpawnPlus plugin) {

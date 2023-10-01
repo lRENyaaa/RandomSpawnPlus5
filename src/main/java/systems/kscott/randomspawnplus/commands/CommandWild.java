@@ -26,8 +26,8 @@ import java.time.Instant;
 @Description("Teleport to a random location")
 public class CommandWild extends BaseCommand {
 
-    private RandomSpawnPlus plugin;
-    private FileConfiguration config;
+    private final RandomSpawnPlus plugin;
+    private final FileConfiguration config;
 
     public CommandWild(RandomSpawnPlus plugin) {
         this.plugin = plugin;
@@ -56,7 +56,7 @@ public class CommandWild extends BaseCommand {
                 plugin.getLogger().info(Long.toString(cooldown));
 
 
-            String message = plugin.getLang().getString("wild-tp-cooldown");
+            String message = Chat.get("wild-tp-cooldown");
             message = message.replace("%delay", Chat.timeLeft(cooldown / 1000 - Instant.now().getEpochSecond()));
 
             Chat.msg(player, message);
@@ -68,7 +68,7 @@ public class CommandWild extends BaseCommand {
                 if (RandomSpawnPlus.getEconomy().has(player, config.getInt("wild-cost"))) {
                     RandomSpawnPlus.getEconomy().withdrawPlayer(player, config.getInt("wild-cost"));
                 } else {
-                    Chat.msg(player, plugin.getLang().getString("wild-no-money"));
+                    Chat.msg(player, Chat.get("wild-no-money"));
                     return;
                 }
             }
@@ -111,7 +111,7 @@ public class CommandWild extends BaseCommand {
         Player otherPlayer = Bukkit.getPlayer(otherPlayerString);
 
         if (otherPlayer == null) {
-            Chat.msg(sender, plugin.getLang().getString("invalid-player"));
+            Chat.msg(sender, Chat.get("invalid-player"));
             return;
         }
 

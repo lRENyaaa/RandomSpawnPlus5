@@ -1,5 +1,6 @@
 package systems.kscott.randomspawnplus.spawn;
 
+import java.util.concurrent.ThreadLocalRandom;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -10,12 +11,11 @@ import systems.kscott.randomspawnplus.util.Locations;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class SpawnCacher {
 
     public static SpawnCacher INSTANCE;
-    private RandomSpawnPlus plugin;
+    private final RandomSpawnPlus plugin;
     @Getter
     private boolean spawnsRequireSaving;
     @Getter
@@ -95,7 +95,7 @@ public class SpawnCacher {
     }
 
     public Location getRandomSpawn() {
-        int element = new Random().nextInt(cachedSpawns.size());
+        int element = ThreadLocalRandom.current().nextInt(cachedSpawns.size());
         return Locations.deserializeLocationString(cachedSpawns.get(element));
     }
 

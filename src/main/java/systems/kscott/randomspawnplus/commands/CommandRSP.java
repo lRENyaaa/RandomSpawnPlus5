@@ -11,7 +11,7 @@ import systems.kscott.randomspawnplus.util.Chat;
 @CommandPermission("randomspawnplus.manage")
 public class CommandRSP extends BaseCommand {
 
-    private RandomSpawnPlus plugin;
+    private final RandomSpawnPlus plugin;
 
     public CommandRSP(RandomSpawnPlus plugin) {
         this.plugin = plugin;

@@ -1,6 +1,7 @@
 package systems.kscott.randomspawnplus.spawn;
 
 import com.cryptomorin.xseries.XMaterial;
+import java.util.concurrent.ThreadLocalRandom;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -10,11 +11,11 @@ import org.bukkit.configuration.file.FileConfiguration;
 import systems.kscott.randomspawnplus.RandomSpawnPlus;
 import systems.kscott.randomspawnplus.events.SpawnCheckEvent;
 import systems.kscott.randomspawnplus.exceptions.FinderTimedOutException;
+import systems.kscott.randomspawnplus.util.Chat;
 import systems.kscott.randomspawnplus.util.Numbers;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class SpawnFinder {
 
@@ -84,7 +85,7 @@ public class SpawnFinder {
 
             SpawnRegion[] spawnRegions = new SpawnRegion[]{region1, region2, region3, region4};
 
-            SpawnRegion region = spawnRegions[new Random().nextInt(3)];
+            SpawnRegion region = spawnRegions[ThreadLocalRandom.current().nextInt(3)];
 
             minX = region.getMinX();
             minZ = region.getMinZ();
@@ -120,7 +121,7 @@ public class SpawnFinder {
                 throw new FinderTimedOutException();
             }
             if (SpawnCacher.getInstance().getCachedSpawns().isEmpty()) {
-                plugin.getLogger().severe(plugin.getLangManager().getConfig().getString("no-spawns-cached"));
+                plugin.getLogger().severe(Chat.get("no-spawns-cached"));
             }
             if (useCache && useSpawnCaching && !SpawnCacher.getInstance().getCachedSpawns().isEmpty()) {
                 location = SpawnCacher.getInstance().getRandomSpawn();
@@ -226,7 +227,7 @@ public class SpawnFinder {
 
         if (!safeBlocks.contains(block1.getType())) {
             if (debugMode) {
-                plugin.getLogger().info("Invalid spawn: " + block1.getType().toString() + " is not a safe block!");
+                plugin.getLogger().info("Invalid spawn: " + block1.getType() + " is not a safe block!");
             }
             isValid = false;
         }

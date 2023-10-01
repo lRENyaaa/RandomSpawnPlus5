@@ -19,8 +19,8 @@ import systems.kscott.randomspawnplus.spawn.SpawnFinder;
 
 public class RSPFirstJoinListener implements Listener {
 
-    private RandomSpawnPlus plugin;
-    private FileConfiguration config;
+    private final RandomSpawnPlus plugin;
+    private final FileConfiguration config;
 
     public RSPFirstJoinListener(RandomSpawnPlus plugin) {
         this.plugin = plugin;
@@ -37,7 +37,6 @@ public class RSPFirstJoinListener implements Listener {
                 if (RSPLoginListener.firstJoinPlayers.contains(player.getUniqueId())) {
                     if (config.getBoolean("use-permission-node") && !player.hasPermission("randomspawnplus.randomspawn")) {
                         RSPLoginListener.firstJoinPlayers.remove(player.getUniqueId());
-                        return;
                     } else {
                         try {
                             Location spawnLoc = SpawnFinder.getInstance().findSpawn(true);

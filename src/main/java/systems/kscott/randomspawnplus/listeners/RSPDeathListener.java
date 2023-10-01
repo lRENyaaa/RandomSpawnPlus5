@@ -16,8 +16,8 @@ import systems.kscott.randomspawnplus.spawn.SpawnFinder;
 
 public class RSPDeathListener implements Listener {
 
-    private RandomSpawnPlus plugin;
-    private FileConfiguration config;
+    private final RandomSpawnPlus plugin;
+    private final FileConfiguration config;
 
     public RSPDeathListener(RandomSpawnPlus plugin) {
         this.plugin = plugin;
@@ -40,7 +40,7 @@ public class RSPDeathListener implements Listener {
                             }
                         }
 
-                        Location location = null;
+                        Location location;
                         try {
                             location = SpawnFinder.getInstance().findSpawn(true).add(0.5, 0, 0.5);
                         } catch (FinderTimedOutException e) {

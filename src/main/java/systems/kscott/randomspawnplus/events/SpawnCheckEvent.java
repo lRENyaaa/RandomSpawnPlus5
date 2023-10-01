@@ -4,15 +4,14 @@ import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.jetbrains.annotations.NotNull;
 
+@Getter
 public class SpawnCheckEvent extends Event {
 
     private static final HandlerList HANDLERS_LIST = new HandlerList();
-    @Getter
-    private Location location;
-    @Getter
+    private final Location location;
     private boolean valid;
-    @Getter
     private String validReason = "UNK";
 
     public SpawnCheckEvent(Location location) {
@@ -25,7 +24,7 @@ public class SpawnCheckEvent extends Event {
     }
 
     @Override
-    public HandlerList getHandlers() {
+    public @NotNull HandlerList getHandlers() {
         return HANDLERS_LIST;
     }
 
