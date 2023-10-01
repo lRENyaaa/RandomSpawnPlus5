@@ -136,7 +136,7 @@ public class CommandWild extends BaseCommand {
         RandomSpawnEvent randomSpawnEvent = new RandomSpawnEvent(location, otherPlayer.getPlayer(), SpawnType.WILD_COMMAND);
 
         Bukkit.getServer().getPluginManager().callEvent(randomSpawnEvent);
-        if (location.isChunkLoaded()) {
+        if (!location.getChunk().isLoaded()) {
             location.getChunk().load();
         }
         PaperLib.teleportAsync(otherPlayer, location.add(0.5, 0, 0.5));
