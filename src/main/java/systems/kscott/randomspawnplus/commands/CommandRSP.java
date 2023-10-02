@@ -26,7 +26,7 @@ public class CommandRSP extends BaseCommand {
         Chat.msg(player, "&b/rsp reload &8- &7Reload the plugin configuration.");
         Chat.msg(player, "&b/wild &8- &7Randomly teleport yourself.");
         Chat.msg(player, "&b/wild <other> &8- &7Randomly teleport another player.");
-        Chat.msg(player, "&7Need help? Check out &bdocs.randomspawnpl.us&7.");
+        Chat.msg(player, "&7Need help? Check out &bhttps://github.com/Winds-Studio/RandomSpawnPlus5&7.");
     }
 
     @Subcommand("reload")

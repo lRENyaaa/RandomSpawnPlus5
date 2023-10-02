@@ -51,17 +51,14 @@ public class RSPFirstJoinListener implements Listener {
                                     prevent = true;
                                 }
                             }
-                            if(!prevent){
-                                new BukkitRunnable() {
-                                    @Override
-                                    public void run() {
-                                        RandomSpawnEvent randomSpawnEvent = new RandomSpawnEvent(spawnLoc, player, SpawnType.FIRST_JOIN);
+                            if (!prevent) {
+                                Bukkit.getRegionScheduler().runDelayed(plugin, player.getLocation(), task -> {
+                                    RandomSpawnEvent randomSpawnEvent = new RandomSpawnEvent(spawnLoc, player, SpawnType.FIRST_JOIN);
 
-                                        Bukkit.getServer().getPluginManager().callEvent(randomSpawnEvent);
-                                        PaperLib.teleportAsync(player, spawnLoc.add(0.5, 0, 0.5));
+                                    Bukkit.getServer().getPluginManager().callEvent(randomSpawnEvent);
+                                    PaperLib.teleportAsync(player, spawnLoc.add(0.5, 0, 0.5));
 
-                                    }
-                                }.runTaskLater(plugin, 3);
+                                }, 3L);
                             } else {
                                 plugin.getLogger().warning("The spawn finder prevented a teleport for " + player.getUniqueId() + ", since essentials sethome is enabled and the player already had a home (perhaps old player data?).");
                             }

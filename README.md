@@ -4,6 +4,9 @@
 
 Support 1.7.x - 1.20.x (maybe?)
 
+## Building
+
+`./mvn clean package`
 
 ## Contact
 
