@@ -1,7 +1,6 @@
 package systems.kscott.randomspawnplus.listeners;
 
 import com.earth2me.essentials.User;
-import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -10,11 +9,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.scheduler.BukkitRunnable;
 import systems.kscott.randomspawnplus.RandomSpawnPlus;
 import systems.kscott.randomspawnplus.events.RandomSpawnEvent;
 import systems.kscott.randomspawnplus.events.SpawnType;
-import systems.kscott.randomspawnplus.exceptions.FinderTimedOutException;
 import systems.kscott.randomspawnplus.spawn.SpawnFinder;
 
 public class RSPFirstJoinListener implements Listener {
@@ -56,14 +53,14 @@ public class RSPFirstJoinListener implements Listener {
                                     RandomSpawnEvent randomSpawnEvent = new RandomSpawnEvent(spawnLoc, player, SpawnType.FIRST_JOIN);
 
                                     Bukkit.getServer().getPluginManager().callEvent(randomSpawnEvent);
-                                    PaperLib.teleportAsync(player, spawnLoc.add(0.5, 0, 0.5));
+                                    player.teleportAsync(spawnLoc.add(0.5, 0, 0.5));
 
                                 }, 3L);
                             } else {
                                 plugin.getLogger().warning("The spawn finder prevented a teleport for " + player.getUniqueId() + ", since essentials sethome is enabled and the player already had a home (perhaps old player data?).");
                             }
                             // quiquelhappy end
-                        } catch (FinderTimedOutException e) {
+                        } catch (Exception e) {
                             plugin.getLogger().warning("The spawn finder failed to find a valid spawn, and has not given " + player.getUniqueId() + " a random spawn. If you find this happening a lot, then raise the 'spawn-finder-tries-before-timeout' key in the config.");
                             return;
                         }

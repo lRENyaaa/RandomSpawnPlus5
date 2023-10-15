@@ -20,41 +20,14 @@ respawn-world: world
 # Will print lots of info to console! Only use if you know what you are doing :P
 debug-mode: false
 
-# Blocks that the player should be able to spawn on (should be used for blocks that have little to no collision)
-# Please use POST-FLATTENING 1.13+ block IDs - https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
-safe-blocks:
-  - ACACIA_SAPLING
-  - BIRCH_SAPLING
-  - DARK_OAK_SAPLING
-  - JUNGLE_SAPLING
-  - OAK_SAPLING
-  - SPRUCE_SAPLING
-  - SNOW
-  - BLACK_CARPET
-  - BLUE_CARPET
-  - BROWN_CARPET
-  - CYAN_CARPET
-  - GRAY_CARPET
-  - GREEN_CARPET
-  - LIGHT_BLUE_CARPET
-  - LIGHT_GRAY_CARPET
-  - LIME_CARPET
-  - MAGENTA_CARPET
-  - ORANGE_CARPET
-  - PINK_CARPET
-  - PURPLE_CARPET
-  - RED_CARPET
-  - WHITE_CARPET
-  - YELLOW_CARPET
-  - BROWN_MUSHROOM
-  - RED_MUSHROOM
-
 # Blocks that the player shouldn't be able to spawn on
-# Please use POST-FLATTENING 1.13+ block IDs - https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
+# Please use POST-FLATTENING 1.13+ block IDs - https://jd.papermc.io/paper/1.20/org/bukkit/Material.html
 # Will have priority over safe-blocks, but try not to have conflicts :)
 unsafe-blocks:
   - VINE
   - AIR
+  - CAVE_AIR
+  - VOID_AIR
 
 ####################
 ### Random Spawn ###

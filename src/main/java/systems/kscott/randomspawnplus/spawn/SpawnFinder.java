@@ -1,6 +1,5 @@
 package systems.kscott.randomspawnplus.spawn;
 
-import com.cryptomorin.xseries.XMaterial;
 import java.util.concurrent.ThreadLocalRandom;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -10,7 +9,6 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import systems.kscott.randomspawnplus.RandomSpawnPlus;
 import systems.kscott.randomspawnplus.events.SpawnCheckEvent;
-import systems.kscott.randomspawnplus.exceptions.FinderTimedOutException;
 import systems.kscott.randomspawnplus.util.Chat;
 import systems.kscott.randomspawnplus.util.Numbers;
 
@@ -22,24 +20,20 @@ public class SpawnFinder {
     public static SpawnFinder INSTANCE;
     public RandomSpawnPlus plugin;
     public FileConfiguration config;
-    ArrayList<Material> safeBlocks;
+    ArrayList<Material> unsafeBlocks;
 
     public SpawnFinder(RandomSpawnPlus plugin) {
         this.plugin = plugin;
         this.config = plugin.getConfig();
 
         /* Setup safeblocks */
-        List<String> safeBlockStrings;
-        safeBlockStrings = config.getStringList("safe-blocks");
+        List<String> unsafeBlockStrings;
+        unsafeBlockStrings = config.getStringList("unsafe-blocks");
 
-        safeBlocks = new ArrayList<>();
-        for (String string : safeBlockStrings) {
-            safeBlocks.add(Material.matchMaterial(string));
+        unsafeBlocks = new ArrayList<>();
+        for (String string : unsafeBlockStrings) {
+            unsafeBlocks.add(Material.matchMaterial(string));
         }
-
-        safeBlocks.add(XMaterial.AIR.parseMaterial());
-        safeBlocks.add(XMaterial.VOID_AIR.parseMaterial());
-        safeBlocks.add(XMaterial.CAVE_AIR.parseMaterial());
     }
 
     public static void initialize(RandomSpawnPlus plugin) {
@@ -93,14 +87,6 @@ public class SpawnFinder {
             maxZ = region.getMaxZ();
         }
 
-        boolean debugMode = config.getBoolean("debug-mode");
-        if (debugMode) {
-            System.out.println(minX);
-            System.out.println(minZ);
-            System.out.println(maxX);
-            System.out.println(maxZ);
-        }
-
         int candidateX = Numbers.getRandomNumberInRange(minX, maxX);
         int candidateZ = Numbers.getRandomNumberInRange(minZ, maxZ);
         int candidateY = getHighestY(world, candidateX, candidateZ);
@@ -108,7 +94,7 @@ public class SpawnFinder {
         return new Location(world, candidateX, candidateY, candidateZ);
     }
 
-    private Location getValidLocation(boolean useSpawnCaching) throws FinderTimedOutException {
+    private Location getValidLocation(boolean useSpawnCaching) throws Exception {
         boolean useCache = config.getBoolean("enable-spawn-cacher");
 
         boolean valid = false;
@@ -118,7 +104,7 @@ public class SpawnFinder {
         int tries = 0;
         while (!valid) {
             if (tries >= 30) {
-                throw new FinderTimedOutException();
+                throw new Exception();
             }
             if (SpawnCacher.getInstance().getCachedSpawns().isEmpty()) {
                 plugin.getLogger().severe(Chat.get("no-spawns-cached"));
@@ -135,29 +121,27 @@ public class SpawnFinder {
             }
             tries = tries + 1;
         }
-
+        if (location == null) return null;
         return location;
     }
 
-    public Location findSpawn(boolean useSpawnCaching) throws FinderTimedOutException {
+    public Location findSpawn(boolean useSpawnCaching) throws Exception {
 
         Location location = getValidLocation(useSpawnCaching);
+        if (location == null) return null;
 
-        boolean debugMode = config.getBoolean("debug-mode");
-        if (debugMode) {
+        if (config.getBoolean("debug-mode")) {
             Location locClone = location.clone();
-            plugin.getLogger().info(locClone.getBlock().getType().toString());
-            plugin.getLogger().info(locClone.add(0, 1, 0).getBlock().getType().toString());
-            plugin.getLogger().info(locClone.add(0, 1, 0).getBlock().getType().toString());
-            plugin.getLogger().info("Spawned at " + location.getBlockX() + ", " + location.getBlockY() + ", " + location.getBlockZ());
+            System.out.println(locClone.getBlock().getType());
+            System.out.println(locClone.add(0, 1, 0).getBlock().getType());
+            System.out.println(locClone.add(0, 1, 0).getBlock().getType());
+            System.out.println("Spawned at " + location.getBlockX() + ", " + location.getBlockY() + ", " + location.getBlockZ());
         }
         return location.add(0, 1, 0);
     }
 
     public boolean checkSpawn(Location location) {
-        if (location == null) {
-            return false;
-        }
+        if (location == null) return false;
 
         boolean blockWaterSpawns = config.getBoolean("block-water-spawns");
         boolean blockLavaSpawns = config.getBoolean("block-lava-spawns");
@@ -173,22 +157,15 @@ public class SpawnFinder {
 
         Location locClone = location.clone();
 
-        if (locClone == null) {
-            return false;
-        }
         // 89apt89 start - Fix Paper method use
-        if (!location.getChunk().isLoaded()) {
-            location.getChunk().load();
+        if (!location.getChunk().isLoaded() || !location.getChunk().isGenerated()) {
+            location.getChunk().load(true);
         }
         // 89apt89 end
 
         Block block0 = locClone.getBlock();
         Block block1 = locClone.add(0, 1, 0).getBlock();
         Block block2 = locClone.add(0, 1, 0).getBlock();
-
-        if (block0 == null || block1 == null || block2 == null) {
-            return false;
-        }
 
         SpawnCheckEvent spawnCheckEvent = new SpawnCheckEvent(location);
 
@@ -198,7 +175,7 @@ public class SpawnFinder {
 
         if (!isValid) {
             if (debugMode) {
-                plugin.getLogger().info("Invalid spawn: " + spawnCheckEvent.getValidReason());
+                System.out.println("Invalid spawn: " + spawnCheckEvent.getValidReason());
             }
         }
 
@@ -211,23 +188,23 @@ public class SpawnFinder {
             }
         }
 
-        if (block0.isEmpty()) {
+        if (block0.getType().isAir()) {
             if (debugMode) {
-                plugin.getLogger().info("Invalid spawn: block0 isAir");
+                System.out.println("Invalid spawn: block0 isAir");
             }
             isValid = false;
         }
 
-        if (!block1.isEmpty() || !block2.isEmpty()) {
+        if (!block1.getType().isAir() || !block2.getType().isAir()) {
             if (debugMode) {
-                plugin.getLogger().info("Invalid spawn: block1 or block2 !isAir");
+                System.out.println("Invalid spawn: block1 or block2 !isAir");
             }
             isValid = false;
         }
 
-        if (!safeBlocks.contains(block1.getType())) {
+        if (unsafeBlocks.contains(block1.getType())) {
             if (debugMode) {
-                plugin.getLogger().info("Invalid spawn: " + block1.getType() + " is not a safe block!");
+                System.out.println("Invalid spawn: " + block1.getType() + " is not a safe block!");
             }
             isValid = false;
         }
@@ -235,7 +212,7 @@ public class SpawnFinder {
         if (blockWaterSpawns) {
             if (block0.getType() == Material.WATER) {
                 if (debugMode) {
-                    plugin.getLogger().info("Invalid spawn: blockWaterSpawns");
+                    System.out.println("Invalid spawn: blockWaterSpawns");
                 }
                 isValid = false;
             }
@@ -244,7 +221,7 @@ public class SpawnFinder {
         if (blockLavaSpawns) {
             if (block0.getType() == Material.LAVA) {
                 if (debugMode) {
-                    plugin.getLogger().info("Invalid spawn: blockLavaSpawns");
+                    System.out.println("Invalid spawn: blockLavaSpawns");
                 }
                 isValid = false;
             }
@@ -254,12 +231,11 @@ public class SpawnFinder {
     }
 
     public int getHighestY(World world, int x, int z) {
-        boolean debugMode = config.getBoolean("debug-mode");
         int i = world.getMaxHeight();
         while (i > world.getMinHeight()) {
             if (!(new Location(world, x, i, z).getBlock()).isEmpty()) {
-                if (debugMode) {
-                    plugin.getLogger().info(Integer.toString(i));
+                if (config.getBoolean("debug-mode")) {
+                    System.out.println(i);
                 }
                 return i;
             }

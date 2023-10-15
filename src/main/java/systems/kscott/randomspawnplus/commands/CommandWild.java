@@ -6,7 +6,6 @@ import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Description;
 import com.earth2me.essentials.User;
-import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -15,7 +14,6 @@ import org.bukkit.entity.Player;
 import systems.kscott.randomspawnplus.RandomSpawnPlus;
 import systems.kscott.randomspawnplus.events.RandomSpawnEvent;
 import systems.kscott.randomspawnplus.events.SpawnType;
-import systems.kscott.randomspawnplus.exceptions.FinderTimedOutException;
 import systems.kscott.randomspawnplus.spawn.SpawnFinder;
 import systems.kscott.randomspawnplus.util.Chat;
 import systems.kscott.randomspawnplus.util.CooldownManager;
@@ -53,7 +51,7 @@ public class CommandWild extends BaseCommand {
 
         if ((cooldown - Instant.now().toEpochMilli()) >= 0) {
             if (config.getBoolean("debug-mode"))
-                plugin.getLogger().info(Long.toString(cooldown));
+                System.out.println(cooldown);
 
 
             String message = Chat.get("wild-tp-cooldown");
@@ -75,7 +73,7 @@ public class CommandWild extends BaseCommand {
         Location location;
         try {
             location = SpawnFinder.getInstance().findSpawn(true);
-        } catch (FinderTimedOutException e) {
+        } catch (Exception e) {
             Chat.msg(player, Chat.get("error-finding-spawn"));
             return;
         }
@@ -98,7 +96,7 @@ public class CommandWild extends BaseCommand {
         RandomSpawnEvent randomSpawnEvent = new RandomSpawnEvent(location, player, SpawnType.WILD_COMMAND);
 
         Bukkit.getServer().getPluginManager().callEvent(randomSpawnEvent);
-        PaperLib.teleportAsync(player, location.add(0.5, 0, 0.5));
+        player.teleportAsync(location.add(0.5, 0, 0.5));
         CooldownManager.addCooldown(player);
     }
 
@@ -116,7 +114,7 @@ public class CommandWild extends BaseCommand {
         Location location;
         try {
             location = SpawnFinder.getInstance().findSpawn(true);
-        } catch (FinderTimedOutException e) {
+        } catch (Exception e) {
             Chat.msg(otherPlayer, Chat.get("error-finding-spawn"));
             return;
         }
@@ -137,6 +135,6 @@ public class CommandWild extends BaseCommand {
         if (!location.getChunk().isLoaded()) {
             location.getChunk().load();
         }
-        PaperLib.teleportAsync(otherPlayer, location.add(0.5, 0, 0.5));
+        otherPlayer.teleportAsync(location.add(0.5, 0, 0.5));
     }
 }
