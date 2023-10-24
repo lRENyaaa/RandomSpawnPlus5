@@ -2,19 +2,19 @@
 
 🔀 A random spawn plugin for modern Minecraft version
 
-Support 1.17.x - Latest Minecraft Version(1.20.2)
+- Paper 1.17.x - Latest Minecraft Version(1.20.2)
+- Folia support (TODO)
+
 
 ## Building
 
 `./mvn clean package`
 
+
 ## Contact
 
 - 📫 Discord: `dreeam___` | QQ: `2682173972`
 
-## TODO
-
-- Support Folia
 
 ## Special Thanks To:
 

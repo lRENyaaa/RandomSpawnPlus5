@@ -6,7 +6,7 @@
 
     <groupId>systems.kscott</groupId>
     <artifactId>randomspawnplus</artifactId>
-    <version>5.0.9</version>
+    <version>5.1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>RandomSpawnPlus</name>
@@ -35,7 +35,6 @@
                 <version>3.5.1</version>
                 <configuration>
                     <dependencyReducedPomLocation>${project.build.directory}/dependency-reduced-pom.xml</dependencyReducedPomLocation>
-                    <minimizeJar>true</minimizeJar>
                     <relocations>
                         <relocation>
                             <pattern>co.aikar.commands</pattern>
@@ -147,16 +146,10 @@
             <version>4.14.0</version>
             <scope>provided</scope>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>co.aikar</groupId>-->
-<!--            <artifactId>acf-paper</artifactId>-->
-<!--            <version>0.5.1-SNAPSHOT</version>-->
-<!--            <scope>compile</scope>-->
-<!--        </dependency>-->
         <dependency>
-            <groupId>com.github.Dreeam-qwq.commands</groupId>
+            <groupId>co.aikar</groupId>
             <artifactId>acf-paper</artifactId>
-            <version>665f076c</version>
+            <version>0.5.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
