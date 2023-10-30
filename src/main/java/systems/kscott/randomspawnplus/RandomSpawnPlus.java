@@ -1,10 +1,12 @@
 package systems.kscott.randomspawnplus;
 
 import co.aikar.commands.PaperCommandManager;
+import com.tcoded.folialib.FoliaLib;
 import lombok.Getter;
 import net.ess3.api.IEssentials;
 import net.luckperms.api.LuckPerms;
 import net.milkbowl.vault.economy.Economy;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -18,11 +20,11 @@ import systems.kscott.randomspawnplus.spawn.SpawnCacher;
 import systems.kscott.randomspawnplus.spawn.SpawnFinder;
 import systems.kscott.randomspawnplus.util.Chat;
 import systems.kscott.randomspawnplus.util.ConfigFile;
-import org.bstats.bukkit.Metrics;
 
 public final class RandomSpawnPlus extends JavaPlugin {
 
     public static RandomSpawnPlus INSTANCE;
+    public FoliaLib foliaLib = new FoliaLib(this);
 
     @Getter
     private ConfigFile configManager;

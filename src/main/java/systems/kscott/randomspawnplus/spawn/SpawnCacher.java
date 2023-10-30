@@ -1,16 +1,15 @@
 package systems.kscott.randomspawnplus.spawn;
 
-import java.util.concurrent.ThreadLocalRandom;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.scheduler.BukkitRunnable;
 import systems.kscott.randomspawnplus.RandomSpawnPlus;
 import systems.kscott.randomspawnplus.util.Locations;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class SpawnCacher {
 
@@ -57,39 +56,32 @@ public class SpawnCacher {
 
         Bukkit.getLogger().info("Caching " + missingLocations + " spawns.");
         for (int i = 0; i <= missingLocations; i++) {
-            new BukkitRunnable() {
+            plugin.foliaLib.getImpl().runLater(() -> {
+                Location location = null;
+                boolean valid = false;
 
-                @Override
-                public void run() {
-                    Location location = null;
-                    boolean valid = false;
-
-                    while (!valid) {
-                        location = finder.getCandidateLocation();
-                        valid = finder.checkSpawn(location);
-                    }
-
-                    newLocations.add(Locations.serializeString(location));
+                while (!valid) {
+                    location = finder.getCandidateLocation();
+                    valid = finder.checkSpawn(location);
                 }
-            }.runTaskLater(plugin, 1);
+
+                newLocations.add(Locations.serializeString(location));
+            }, 1);
         }
 
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                /* Wait for all spawns to be cached */
-                if (newLocations.size() <= missingLocations) {
-                    if (plugin.getConfig().getBoolean("debug-mode")) {
-                        System.out.println(newLocations.size() + ", " + missingLocations);
-                    }
-                } else {
-                    cachedSpawns.addAll(newLocations);
-                    /* Save spawns to file */
-                    save();
-                    cancel();
+        plugin.foliaLib.getImpl().runTimer(() -> {
+            /* Wait for all spawns to be cached */
+            if (newLocations.size() <= missingLocations) {
+                if (plugin.getConfig().getBoolean("debug-mode")) {
+                    System.out.println(newLocations.size() + ", " + missingLocations);
                 }
+            } else {
+                cachedSpawns.addAll(newLocations);
+                /* Save spawns to file */
+                save();
+                plugin.foliaLib.getImpl().cancelAllTasks();
             }
-        }.runTaskTimerAsynchronously(plugin, 10, 10);
+        }, 10, 10);
     }
 
     public Location getRandomSpawn() {

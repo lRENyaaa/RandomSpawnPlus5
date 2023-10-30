@@ -9,7 +9,8 @@ import org.bukkit.entity.Player;
 import systems.kscott.randomspawnplus.RandomSpawnPlus;
 
 import java.text.NumberFormat;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Locale;
 
 public class Chat {
     /* Thanks splodge */

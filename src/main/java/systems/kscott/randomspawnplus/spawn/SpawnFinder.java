@@ -1,6 +1,5 @@
 package systems.kscott.randomspawnplus.spawn;
 
-import java.util.concurrent.ThreadLocalRandom;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -14,6 +13,7 @@ import systems.kscott.randomspawnplus.util.Numbers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class SpawnFinder {
 
