@@ -158,7 +158,7 @@ public class SpawnFinder {
         Location locClone = location.clone();
 
         // 89apt89 start - Fix Paper method use
-        if (!location.getChunk().isLoaded() || !location.getChunk().isGenerated()) {
+        if (!location.getChunk().isLoaded()) {
             location.getChunk().load(true);
         }
         // 89apt89 end

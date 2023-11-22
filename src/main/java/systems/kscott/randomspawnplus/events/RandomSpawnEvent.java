@@ -12,11 +12,11 @@ public class RandomSpawnEvent extends Event {
     @Getter
     private static final HandlerList HANDLERS_LIST = new HandlerList();
     @Getter
-    private Location location;
+    private final Location location;
     @Getter
-    private Player player;
+    private final Player player;
     @Getter
-    private SpawnType spawnType;
+    private final SpawnType spawnType;
 
 
     public RandomSpawnEvent(Location location, Player player, SpawnType spawnType) {

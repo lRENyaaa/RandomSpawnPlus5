@@ -18,7 +18,7 @@ public class SpawnCacher {
     @Getter
     private boolean spawnsRequireSaving;
     @Getter
-    private List<String> cachedSpawns;
+    private final List<String> cachedSpawns;
 
     public SpawnCacher(RandomSpawnPlus plugin) {
         this.plugin = plugin;
@@ -79,7 +79,7 @@ public class SpawnCacher {
                 cachedSpawns.addAll(newLocations);
                 /* Save spawns to file */
                 save();
-                plugin.foliaLib.getImpl().cancelAllTasks();
+                plugin.foliaLib.getImpl().cancelTask(());
             }
         }, 10, 10);
     }

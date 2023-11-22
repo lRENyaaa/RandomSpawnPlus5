@@ -23,7 +23,7 @@ import systems.kscott.randomspawnplus.util.ConfigFile;
 
 public final class RandomSpawnPlus extends JavaPlugin {
 
-    public static RandomSpawnPlus INSTANCE;
+    private static RandomSpawnPlus INSTANCE;
     public FoliaLib foliaLib = new FoliaLib(this);
 
     @Getter
@@ -122,8 +122,11 @@ public final class RandomSpawnPlus extends JavaPlugin {
 
     private void setupPermissions() {
         RegisteredServiceProvider<LuckPerms> rsp = getServer().getServicesManager().getRegistration(LuckPerms.class);
-        if (rsp != null) luckPerms = rsp.getProvider();
-        if (rsp == null) luckPerms = null;
+        if (rsp != null) {
+            luckPerms = rsp.getProvider();
+        } else {
+            luckPerms = null;
+        }
     }
 
     private boolean setupEconomy() {
