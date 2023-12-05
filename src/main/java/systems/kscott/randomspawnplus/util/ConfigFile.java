@@ -14,19 +14,17 @@ public class ConfigFile {
 
     @Getter
     private FileConfiguration config;
-    private final RandomSpawnPlus plugin;
     private final String fileName;
 
-    public ConfigFile(RandomSpawnPlus plugin, String fileName) {
+    public ConfigFile(String fileName) {
         this.fileName = fileName;
-        this.plugin = plugin;
         reload();
     }
 
     private File createFile() {
-        File customConfigFile = new File(plugin.getDataFolder(), fileName);
+        File customConfigFile = new File(RandomSpawnPlus.getInstance().getDataFolder(), fileName);
         if (!customConfigFile.exists() || customConfigFile.getParentFile().mkdirs()) {
-            plugin.saveResource(fileName, false);
+            RandomSpawnPlus.getInstance().saveResource(fileName, false);
         }
         return customConfigFile;
     }
@@ -43,7 +41,7 @@ public class ConfigFile {
 
     public void save() {
         try {
-            config.save(Paths.get(plugin.getDataFolder().getAbsolutePath(), fileName).toString());
+            config.save(Paths.get(RandomSpawnPlus.getInstance().getDataFolder().getAbsolutePath(), fileName).toString());
         } catch (IOException e) {
             e.printStackTrace();
         }

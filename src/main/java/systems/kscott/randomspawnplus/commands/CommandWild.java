@@ -24,12 +24,10 @@ import java.time.Instant;
 @Description("Teleport to a random location")
 public class CommandWild extends BaseCommand {
 
-    private final RandomSpawnPlus plugin;
     private final FileConfiguration config;
 
-    public CommandWild(RandomSpawnPlus plugin) {
-        this.plugin = plugin;
-        this.config = plugin.getConfig();
+    public CommandWild() {
+        this.config = RandomSpawnPlus.getInstance().getConfig();
     }
 
     @Default
@@ -61,7 +59,7 @@ public class CommandWild extends BaseCommand {
             return;
 
         }
-        if (RandomSpawnPlus.getEconomy() != null && plugin.getConfig().getInt("wild-cost") != 0 && !player.hasPermission("randomspawnplus.wild.bypasscost")) {
+        if (RandomSpawnPlus.getEconomy() != null && RandomSpawnPlus.getInstance().getConfig().getInt("wild-cost") != 0 && !player.hasPermission("randomspawnplus.wild.bypasscost")) {
             if (RandomSpawnPlus.getEconomy().has(player, config.getInt("wild-cost"))) {
                 RandomSpawnPlus.getEconomy().withdrawPlayer(player, config.getInt("wild-cost"));
             } else {
@@ -86,7 +84,7 @@ public class CommandWild extends BaseCommand {
         Chat.msg(player, message);
 
         if (config.getBoolean("home-on-wild")) {
-            User user = plugin.getEssentials().getUser(player);
+            User user = RandomSpawnPlus.getInstance().getEssentials().getUser(player);
             if (!user.hasHome()) {
                 user.setHome("home", location);
                 user.save();
@@ -96,7 +94,7 @@ public class CommandWild extends BaseCommand {
         RandomSpawnEvent randomSpawnEvent = new RandomSpawnEvent(location, player, SpawnType.WILD_COMMAND);
 
         Bukkit.getServer().getPluginManager().callEvent(randomSpawnEvent);
-        player.teleportAsync(location.add(0.5, 0, 0.5));
+        RandomSpawnPlus.getInstance().foliaLib.getImpl().teleportAsync(player, location.add(0.5, 0, 0.5));
         CooldownManager.addCooldown(player);
     }
 
@@ -135,6 +133,6 @@ public class CommandWild extends BaseCommand {
         if (!location.getChunk().isLoaded()) {
             location.getChunk().load();
         }
-        otherPlayer.teleportAsync(location.add(0.5, 0, 0.5));
+        RandomSpawnPlus.getInstance().foliaLib.getImpl().teleportAsync(otherPlayer, location.add(0.5, 0, 0.5));
     }
 }

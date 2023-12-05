@@ -15,16 +15,10 @@ import systems.kscott.randomspawnplus.util.Chat;
 @CommandPermission("randomspawnplus.manage")
 public class CommandRSP extends BaseCommand {
 
-    private final RandomSpawnPlus plugin;
-
-    public CommandRSP(RandomSpawnPlus plugin) {
-        this.plugin = plugin;
-    }
-
     @Default
     @Subcommand("help|h")
     public void _main(CommandSender player) {
-        Chat.msg(player, "&8[&3RandomSpawnPlus&8] &7Running &bv" + plugin.getDescription().getVersion() + "&7, made with love &a:^)");
+        Chat.msg(player, "&8[&3RandomSpawnPlus&8] &7Running &bv" + RandomSpawnPlus.getInstance().getDescription().getVersion() + "&7, made with love &a:^)");
         Chat.msg(player, "");
         Chat.msg(player, "&b/rsp &8- &7The help menu.");
         Chat.msg(player, "&b/rsp reload &8- &7Reload the plugin configuration.");
@@ -35,10 +29,10 @@ public class CommandRSP extends BaseCommand {
 
     @Subcommand("reload")
     public void _reload(CommandSender player) {
-        plugin.getConfigManager().reload();
-        plugin.getLangManager().reload();
-        plugin.getSpawnsManager().reload();
-        Chat.setLang(plugin.getLangManager().getConfig());
+        RandomSpawnPlus.getInstance().getConfigManager().reload();
+        RandomSpawnPlus.getInstance().getLangManager().reload();
+        RandomSpawnPlus.getInstance().getSpawnsManager().reload();
+        Chat.setLang(RandomSpawnPlus.getInstance().getLangManager().getConfig());
         Chat.msg(player, "&8[&3RandomSpawnPlus&8] &7Reloaded &bconfig.yml&7, &blang.yml&7, and &bspawns.yml&7.");
     }
 }

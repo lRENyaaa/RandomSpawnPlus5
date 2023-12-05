@@ -16,8 +16,8 @@ public class RSPLoginListener implements Listener {
     private final FileConfiguration config;
 
 
-    public RSPLoginListener(RandomSpawnPlus plugin) {
-        this.config = plugin.getConfig();
+    public RSPLoginListener() {
+        this.config = RandomSpawnPlus.getInstance().getConfig();
     }
 
     @EventHandler

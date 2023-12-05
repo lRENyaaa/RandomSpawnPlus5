@@ -1,5 +1,5 @@
 name: RandomSpawnPlus5
-version: ${project.version}
+version: ${version}
 main: systems.kscott.randomspawnplus.RandomSpawnPlus
 api-version: 1.13
 folia-supported: true

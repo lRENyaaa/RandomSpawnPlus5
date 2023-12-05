@@ -2,7 +2,6 @@ package systems.kscott.randomspawnplus.util;
 
 import lombok.Setter;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -18,20 +17,20 @@ public class Chat {
     @Setter
     private static FileConfiguration lang;
 
-    public static void initialize(RandomSpawnPlus plugin) {
-        lang = plugin.getLang();
+    public static void initialize() {
+        lang = RandomSpawnPlus.getInstance().getLang();
     }
 
     public static void msg(Player player, String... messages) {
-        Arrays.stream(messages).forEach((s) -> player.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(s)));
+        Arrays.stream(messages).forEach((s) -> RandomSpawnPlus.getInstance().adventure().player(player).sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(s)));
     }
 
     public static void msg(CommandSender sender, String... messages) {
-        Arrays.stream(messages).forEach((s) -> sender.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(s)));
+        Arrays.stream(messages).forEach((s) -> RandomSpawnPlus.getInstance().adventure().sender(sender).sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(s)));
     }
 
     public static void msgAll(String... messages) {
-        Bukkit.getOnlinePlayers().forEach((o) -> Arrays.stream(messages).forEach((s) -> o.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(s))));
+        Arrays.stream(messages).forEach((s) -> RandomSpawnPlus.getInstance().adventure().all().sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(s)));
     }
 
     public static String uppercaseFirst(String str) {

@@ -4,6 +4,7 @@ import co.aikar.commands.PaperCommandManager;
 import com.tcoded.folialib.FoliaLib;
 import lombok.Getter;
 import net.ess3.api.IEssentials;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.luckperms.api.LuckPerms;
 import net.milkbowl.vault.economy.Economy;
 import org.bstats.bukkit.Metrics;
@@ -35,7 +36,6 @@ public final class RandomSpawnPlus extends JavaPlugin {
 
     @Getter
     private static Economy economy = null;
-
     @Getter
     private LuckPerms luckPerms;
 
@@ -43,22 +43,32 @@ public final class RandomSpawnPlus extends JavaPlugin {
         return INSTANCE;
     }
 
+    private BukkitAudiences adventure;
+    public @NotNull BukkitAudiences adventure() {
+        if (this.adventure == null) {
+            throw new IllegalStateException("Tried to access Adventure when the plugin was disabled!");
+        }
+        return this.adventure;
+    }
+
     @Override
     public void onEnable() {
 
-        configManager = new ConfigFile(this, "config.yml");
-        langManager = new ConfigFile(this, "lang.yml");
-        spawnsManager = new ConfigFile(this, "spawns.yml");
+        configManager = new ConfigFile("config.yml");
+        langManager = new ConfigFile("lang.yml");
+        spawnsManager = new ConfigFile("spawns.yml");
 
         Chat.setLang(langManager.getConfig());
 
         registerEvents();
         registerCommands();
 
-        SpawnFinder.initialize(this);
-        SpawnCacher.initialize(this);
-        Chat.initialize(this);
+        SpawnFinder.initialize();
+        SpawnCacher.initialize();
+        Chat.initialize();
+
         INSTANCE = this;
+        this.adventure = BukkitAudiences.create(this);
 
         new Metrics(this, 6465);
 
@@ -87,20 +97,24 @@ public final class RandomSpawnPlus extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        if (this.adventure != null) {
+            this.adventure.close();
+            this.adventure = null;
+        }
         SpawnCacher.getInstance().save();
     }
 
     public void registerEvents() {
-        getServer().getPluginManager().registerEvents(new RSPDeathListener(this), this);
-        getServer().getPluginManager().registerEvents(new RSPLoginListener(this), this);
-        getServer().getPluginManager().registerEvents(new RSPFirstJoinListener(this), this);
+        getServer().getPluginManager().registerEvents(new RSPDeathListener(), this);
+        getServer().getPluginManager().registerEvents(new RSPLoginListener(), this);
+        getServer().getPluginManager().registerEvents(new RSPFirstJoinListener(), this);
     }
 
     public void registerCommands() {
         PaperCommandManager manager = new PaperCommandManager(this);
-        manager.registerCommand(new CommandRSP(this));
+        manager.registerCommand(new CommandRSP());
         if (configManager.getConfig().getBoolean("wild-enabled")) {
-            manager.registerCommand(new CommandWild(this));
+            manager.registerCommand(new CommandWild());
         }
     }
 

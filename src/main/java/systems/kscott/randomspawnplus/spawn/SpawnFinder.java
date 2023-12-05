@@ -18,13 +18,11 @@ import java.util.concurrent.ThreadLocalRandom;
 public class SpawnFinder {
 
     public static SpawnFinder INSTANCE;
-    public RandomSpawnPlus plugin;
     public FileConfiguration config;
     ArrayList<Material> unsafeBlocks;
 
-    public SpawnFinder(RandomSpawnPlus plugin) {
-        this.plugin = plugin;
-        this.config = plugin.getConfig();
+    public SpawnFinder() {
+        this.config = RandomSpawnPlus.getInstance().getConfig();
 
         /* Setup safeblocks */
         List<String> unsafeBlockStrings;
@@ -36,8 +34,8 @@ public class SpawnFinder {
         }
     }
 
-    public static void initialize(RandomSpawnPlus plugin) {
-        INSTANCE = new SpawnFinder(plugin);
+    public static void initialize() {
+        INSTANCE = new SpawnFinder();
     }
 
     public static SpawnFinder getInstance() {
@@ -48,16 +46,16 @@ public class SpawnFinder {
         String worldString = config.getString("respawn-world");
 
         if (worldString == null) {
-            plugin.getLogger().severe("You've incorrectly defined the `respawn-world` key in the config.");
-            plugin.getServer().getPluginManager().disablePlugin(plugin);
+            RandomSpawnPlus.getInstance().getLogger().severe("You've incorrectly defined the `respawn-world` key in the config.");
+            RandomSpawnPlus.getInstance().getServer().getPluginManager().disablePlugin(RandomSpawnPlus.getInstance());
             return null;
         }
 
         World world = Bukkit.getWorld(worldString);
 
         if (world == null) {
-            plugin.getLogger().severe("The world '" + worldString + "' is invalid. Please change the 'respawn-world' key in the config.");
-            plugin.getServer().getPluginManager().disablePlugin(plugin);
+            RandomSpawnPlus.getInstance().getLogger().severe("The world '" + worldString + "' is invalid. Please change the 'respawn-world' key in the config.");
+            RandomSpawnPlus.getInstance().getServer().getPluginManager().disablePlugin(RandomSpawnPlus.getInstance());
             return null;
         }
 
@@ -107,7 +105,7 @@ public class SpawnFinder {
                 throw new Exception();
             }
             if (SpawnCacher.getInstance().getCachedSpawns().isEmpty()) {
-                plugin.getLogger().severe(Chat.get("no-spawns-cached"));
+                RandomSpawnPlus.getInstance().getLogger().severe(Chat.get("no-spawns-cached"));
             }
             if (useCache && useSpawnCaching && !SpawnCacher.getInstance().getCachedSpawns().isEmpty()) {
                 location = SpawnCacher.getInstance().getRandomSpawn();
@@ -157,11 +155,9 @@ public class SpawnFinder {
 
         Location locClone = location.clone();
 
-        // 89apt89 start - Fix Paper method use
         if (!location.getChunk().isLoaded()) {
-            location.getChunk().load(true);
+            return false;
         }
-        // 89apt89 end
 
         Block block0 = locClone.getBlock();
         Block block1 = locClone.add(0, 1, 0).getBlock();
@@ -231,17 +227,19 @@ public class SpawnFinder {
     }
 
     public int getHighestY(World world, int x, int z) {
-        int i = world.getMaxHeight();
-        while (i > world.getMinHeight()) {
-            if (!(new Location(world, x, i, z).getBlock()).isEmpty()) {
+        int maxHeight = world.getMaxHeight();
+        int minHeight = world.getMinHeight();
+
+        for (int i = maxHeight; i >= minHeight; i--) {
+            Location location = new Location(world, x, i, z);
+            if (!location.getBlock().isEmpty()) {
                 if (config.getBoolean("debug-mode")) {
                     System.out.println(i);
                 }
                 return i;
             }
-            i--;
         }
-        return i;
+        return minHeight;
     }
 
 

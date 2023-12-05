@@ -2,19 +2,20 @@
 
 🔀 A random spawn plugin for modern Minecraft version
 
-- Paper 1.17.x - Latest Minecraft Version(1.20.2)
-- Folia support (TODO)
+## Compatibility
 
+- Support Java 8 and higher
+- Support 1.12.2 - Latest Minecraft version (1.20.3)
+- Compatible with Spigot / Paper / Paper Forks / Forge+Bukkit Hybrid Server
+- Folia Support
 
 ## Building
 
-`./mvn clean package`
-
+`./gradlew clean build`
 
 ## Contact
 
 - 📫 Discord: `dreeam___` | QQ: `2682173972`
-
 
 ## Special Thanks To:
 

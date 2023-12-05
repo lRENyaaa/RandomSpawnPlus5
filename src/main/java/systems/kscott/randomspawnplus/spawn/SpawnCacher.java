@@ -1,5 +1,6 @@
 package systems.kscott.randomspawnplus.spawn;
 
+import com.tcoded.folialib.wrapper.task.WrappedTask;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -14,21 +15,21 @@ import java.util.concurrent.ThreadLocalRandom;
 public class SpawnCacher {
 
     public static SpawnCacher INSTANCE;
-    private final RandomSpawnPlus plugin;
+
     @Getter
     private boolean spawnsRequireSaving;
     @Getter
     private final List<String> cachedSpawns;
+    private WrappedTask cacheSpawnTask;
 
-    public SpawnCacher(RandomSpawnPlus plugin) {
-        this.plugin = plugin;
+    public SpawnCacher() {
         this.spawnsRequireSaving = false;
         this.cachedSpawns = new ArrayList<>();
         cacheSpawns();
     }
 
-    public static void initialize(RandomSpawnPlus plugin) {
-        INSTANCE = new SpawnCacher(plugin);
+    public static void initialize() {
+        INSTANCE = new SpawnCacher();
     }
 
     public static SpawnCacher getInstance() {
@@ -37,8 +38,8 @@ public class SpawnCacher {
 
     private void cacheSpawns() {
 
-        FileConfiguration spawns = plugin.getSpawns();
-        FileConfiguration config = plugin.getConfig();
+        FileConfiguration spawns = RandomSpawnPlus.getInstance().getSpawns();
+        FileConfiguration config = RandomSpawnPlus.getInstance().getConfig();
 
         SpawnFinder finder = SpawnFinder.getInstance();
 
@@ -56,7 +57,7 @@ public class SpawnCacher {
 
         Bukkit.getLogger().info("Caching " + missingLocations + " spawns.");
         for (int i = 0; i <= missingLocations; i++) {
-            plugin.foliaLib.getImpl().runLater(() -> {
+            RandomSpawnPlus.getInstance().foliaLib.getImpl().runLater(() -> {
                 Location location = null;
                 boolean valid = false;
 
@@ -69,17 +70,17 @@ public class SpawnCacher {
             }, 1);
         }
 
-        plugin.foliaLib.getImpl().runTimer(() -> {
+        cacheSpawnTask = RandomSpawnPlus.getInstance().foliaLib.getImpl().runTimer(() -> {
             /* Wait for all spawns to be cached */
             if (newLocations.size() <= missingLocations) {
-                if (plugin.getConfig().getBoolean("debug-mode")) {
+                if (RandomSpawnPlus.getInstance().getConfig().getBoolean("debug-mode")) {
                     System.out.println(newLocations.size() + ", " + missingLocations);
                 }
             } else {
                 cachedSpawns.addAll(newLocations);
                 /* Save spawns to file */
                 save();
-                plugin.foliaLib.getImpl().cancelTask(());
+                RandomSpawnPlus.getInstance().foliaLib.getImpl().cancelTask(cacheSpawnTask);
             }
         }, 10, 10);
     }
@@ -95,7 +96,7 @@ public class SpawnCacher {
     }
 
     public void save() {
-        plugin.getSpawnsManager().getConfig().set("spawns", cachedSpawns);
-        plugin.getSpawnsManager().save();
+        RandomSpawnPlus.getInstance().getSpawnsManager().getConfig().set("spawns", cachedSpawns);
+        RandomSpawnPlus.getInstance().getSpawnsManager().save();
     }
 }

@@ -15,12 +15,10 @@ import systems.kscott.randomspawnplus.spawn.SpawnFinder;
 
 public class RSPDeathListener implements Listener {
 
-    private final RandomSpawnPlus plugin;
     private final FileConfiguration config;
 
-    public RSPDeathListener(RandomSpawnPlus plugin) {
-        this.plugin = plugin;
-        this.config = plugin.getConfig();
+    public RSPDeathListener() {
+        this.config = RandomSpawnPlus.getInstance().getConfig();
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -43,7 +41,7 @@ public class RSPDeathListener implements Listener {
                         try {
                             location = SpawnFinder.getInstance().findSpawn(true).add(0.5, 0, 0.5);
                         } catch (Exception e) {
-                            plugin.getLogger().warning("The spawn finder failed to find a valid spawn, and has not given " + player.getName() + " a random spawn. If you find this happening a lot, then raise the 'spawn-finder-tries-before-timeout' key in the config.");
+                            RandomSpawnPlus.getInstance().getLogger().warning("The spawn finder failed to find a valid spawn, and has not given " + player.getName() + " a random spawn. If you find this happening a lot, then raise the 'spawn-finder-tries-before-timeout' key in the config.");
                             return;
                         }
 
