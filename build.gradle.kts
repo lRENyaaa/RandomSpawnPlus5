@@ -86,6 +86,7 @@ tasks.withType<ShadowJar> {
     minimize {
         exclude(dependency("com.tcoded.folialib:.*:.*"))
     }
+    relocate("net.kyori", "systems.kscott.randomspawnplus.libs.kyori")
     relocate("co.aikar.commands", "systems.kscott.randomspawnplus.libs.acf.commands")
     relocate("co.aikar.locales", "systems.kscott.randomspawnplus.libs.acf.locales")
     relocate("com.cryptomorin.xseries", "systems.kscott.randomspawnplus.libs.xseries")
