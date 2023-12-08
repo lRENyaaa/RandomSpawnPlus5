@@ -54,6 +54,9 @@ public final class RandomSpawnPlus extends JavaPlugin {
     @Override
     public void onEnable() {
 
+        INSTANCE = this;
+        this.adventure = BukkitAudiences.create(this);
+
         configManager = new ConfigFile("config.yml");
         langManager = new ConfigFile("lang.yml");
         spawnsManager = new ConfigFile("spawns.yml");
@@ -66,9 +69,6 @@ public final class RandomSpawnPlus extends JavaPlugin {
         SpawnFinder.initialize();
         SpawnCacher.initialize();
         Chat.initialize();
-
-        INSTANCE = this;
-        this.adventure = BukkitAudiences.create(this);
 
         new Metrics(this, 6465);
 
