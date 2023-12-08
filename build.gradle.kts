@@ -1,5 +1,3 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-
 plugins {
     `java-library`
     `maven-publish`
@@ -46,7 +44,7 @@ repositories {
 val adventureVersion = "4.14.0"
 
 dependencies {
-    compileOnly("org.spigotmc:spigot-api:1.20.3-R0.1-SNAPSHOT")
+    compileOnly("org.spigotmc:spigot-api:1.20.4-R0.1-SNAPSHOT")
 
     compileOnly("org.apache.commons:commons-lang3:3.14.0")
     compileOnly("org.projectlombok:lombok:1.18.30")
@@ -64,7 +62,7 @@ dependencies {
     api("net.kyori:adventure-text-serializer-legacy:$adventureVersion")
 }
 
-tasks.withType<JavaCompile>() {
+tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
 }
 
@@ -77,7 +75,8 @@ tasks.build.configure {
     dependsOn("shadowJar")
 }
 
-tasks.withType<ShadowJar> {
+tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
+    archiveFileName = "${project.name}-${project.version}.jar"
     exclude("META-INF/**", // Dreeam - Avoid to include META-INF/maven in Jar
         "com/cryptomorin/xseries/XBiome*",
         "com/cryptomorin/xseries/NMSExtras*",
